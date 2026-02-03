@@ -12,7 +12,7 @@ import { Camera, Environment, Render, Script } from "@playcanvas/react/component
 /**
  * Viewer renders a sphere with a grid and camera controls
  */
-export function Viewer({ onClick }: ViewerProps) {
+export function Viewer({ onClick, label }: ViewerProps) {
   // Track the hover state and set the color based on the hover state
   const [hovering, setHovering] = useState(false);
 
@@ -29,6 +29,14 @@ export function Viewer({ onClick }: ViewerProps) {
   useEffect(() => {
     document.body.style.cursor = hovering ? "pointer" : "default";
   }, [hovering]);
+
+  // DEBUG: Confirm that props (label) are passed correctly from App to Viewer.
+  // This is a temporary console log; later we will render the label in the UI instead.
+  useEffect(() => {
+    if (label) {
+      console.log("Viewer label:", label);
+    }
+  }, [label]);
 
   // Don't render until the environment map is loaded
   if (!envMap) return null;
@@ -65,4 +73,5 @@ export function Viewer({ onClick }: ViewerProps) {
 
 type ViewerProps = {
   onClick: () => void;
+  label?: string;
 };

@@ -4,6 +4,7 @@ import reactLogo from './assets/react.svg'
 import playcanvasLogo from './assets/playcanvas.png'
 import './App.css'
 import { Viewer } from "./components/Viewer";
+import { works } from "./data/works";
 
 function App() {
   const [count, setCount] = useState(0)
@@ -12,7 +13,10 @@ function App() {
     <>
       <div className="full-bleed">
         <Application className="playcanvas-app">
-          <Viewer onClick={() => setCount((count) => count + 1)} />
+          <Viewer
+            onClick={() => setCount((count) => count + 1)}
+            label={works[0].title}
+          />
         </Application>
       </div>
       <div className="absolute overlay">
