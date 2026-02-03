@@ -1,3 +1,5 @@
+// src/components/Viewer.tsx
+
 // @ts-expect-error - PlayCanvas ESM scripts don't have type declarations
 import { CameraControls } from "playcanvas/scripts/esm/camera-controls.mjs";
 // @ts-expect-error - PlayCanvas ESM scripts don't have type declarations
@@ -8,25 +10,24 @@ import { useEnvAtlas, useMaterial } from "@playcanvas/react/hooks";
 import { Camera, Environment, Render, Script } from "@playcanvas/react/components";
 
 /**
- * The Scene renders a sphere with a grid and camera controls
+ * Viewer renders a sphere with a grid and camera controls
  */
-function Scene({ onClick }: SceneProps) {
-
+export function Viewer({ onClick }: ViewerProps) {
   // Track the hover state and set the color based on the hover state
   const [hovering, setHovering] = useState(false);
 
   // Set a material color based on the hover state
-  const diffuse = hovering ? 'orange' : 'lightgrey';
+  const diffuse = hovering ? "orange" : "lightgrey";
 
   // Create a material for the sphere
   const material = useMaterial({ diffuse });
 
   // Load the environment map
-  const { asset: envMap } = useEnvAtlas('/environment-map.png');
+  const { asset: envMap } = useEnvAtlas("/environment-map.png");
 
-  // change the mouse cursor based on the hover state
+  // Change the mouse cursor based on the hover state
   useEffect(() => {
-    document.body.style.cursor = hovering ? 'pointer' : 'default';
+    document.body.style.cursor = hovering ? "pointer" : "default";
   }, [hovering]);
 
   // Don't render until the environment map is loaded
@@ -43,28 +44,25 @@ function Scene({ onClick }: SceneProps) {
       </Entity>
 
       {/* Create a camera entity with camera controls */}
-      <Entity name='camera' position={[4, 1, 4]}>
-          <Camera clearColor='#171717' />
-          <Script script={CameraControls} />
+      <Entity name="camera" position={[4, 1, 4]}>
+        <Camera clearColor="#171717" />
+        <Script script={CameraControls} />
       </Entity>
 
       {/* Create and position entity with pointer events */}
-      <Entity 
+      <Entity
         position={[0, 0.5, 0]}
         onClick={onClick}
         onPointerOver={() => setHovering(true)}
         onPointerOut={() => setHovering(false)}
-        >
-        
+      >
         {/* Render a sphere with the material */}
         <Render type="sphere" material={material} />
       </Entity>
     </>
-  )
+  );
 }
 
-type SceneProps = {
+type ViewerProps = {
   onClick: () => void;
-}
-
-export default Scene;
+};

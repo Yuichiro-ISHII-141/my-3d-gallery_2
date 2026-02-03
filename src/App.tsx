@@ -3,7 +3,7 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import playcanvasLogo from './assets/playcanvas.png'
 import './App.css'
-import Scene from "./Scene";
+import { Viewer } from "./components/Viewer";
 
 function App() {
   const [count, setCount] = useState(0)
@@ -12,7 +12,7 @@ function App() {
     <>
       <div className="full-bleed">
         <Application className="playcanvas-app">
-          <Scene onClick={() => setCount((count) => count + 1)}/>
+          <Viewer onClick={() => setCount((count) => count + 1)} />
         </Application>
       </div>
       <div className="absolute overlay">
@@ -32,7 +32,7 @@ function App() {
             Click Count: {count}
           </span>
           <p>
-            Edit <code>src/Scene.tsx</code> and save to test HMR
+            Edit <code>src/components/Viewer.tsx</code> and save to test HMR
           </p>
         </div>
         <p className="read-the-docs">
