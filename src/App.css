@@ -85,3 +85,67 @@ header {
   border-radius: 0.5rem;
 }
 
+.gallery-layout {
+  display: flex;
+  height: 100%;
+}
+
+.gallery-list {
+  width: 240px;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 12px;
+  overflow-y: auto;
+}
+
+.gallery-list h2 {
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+  opacity: 0.8;
+}
+
+.gallery-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.gallery-list li + li {
+  margin-top: 4px;
+}
+
+.gallery-list button {
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  color: #ddd;
+  padding: 6px 8px;
+  cursor: pointer;
+}
+
+.gallery-list button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.gallery-list button.active {
+  background: rgba(255, 255, 255, 0.2);
+  font-weight: bold;
+}
+
+/* overlayは pointer-events: none のままなので、クリック可能にしたい領域だけ auto に戻す */
+.pointer-events-auto {
+  pointer-events: auto;
+}
+
+/* Works サイドバー（左） */
+.sidebar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 240px;
+  padding: 12px;
+  overflow-y: auto;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+}

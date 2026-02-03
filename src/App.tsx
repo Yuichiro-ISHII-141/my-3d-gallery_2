@@ -4,6 +4,7 @@ import reactLogo from "./assets/react.svg";
 import playcanvasLogo from "./assets/playcanvas.png";
 import "./App.css";
 import { Viewer } from "./components/Viewer";
+import { GalleryList } from "./components/GalleryList";
 import { works } from "./data/works";
 
 function App() {
@@ -21,11 +22,22 @@ function App() {
     <>
       <div className="full-bleed">
         <Application className="playcanvas-app">
+          {/* 3D（PlayCanvas）だけ */}
           <Viewer onClick={handleViewerClick} label={currentWork.title} />
         </Application>
       </div>
 
+      {/* UI（DOM）だけ */}
       <div className="absolute overlay">
+        {/* ← ここに Works を追加 */}
+        <div className="sidebar pointer-events-auto">
+          <GalleryList
+            works={works}
+            currentIndex={currentIndex}
+            onSelect={setCurrentIndex}
+          />
+        </div>
+
         <div className="grow">
           <header>
             <h1>My 3D Gallery</h1>
@@ -52,8 +64,8 @@ function App() {
             Current: {currentWork.title}
           </span>
           <p>
-            Click the sphere to cycle works. Edit{" "}
-            <code>src/data/works.ts</code> to add more works.
+            Click the sphere to cycle works. Edit <code>src/data/works.ts</code>{" "}
+            to add more works.
           </p>
         </div>
 
