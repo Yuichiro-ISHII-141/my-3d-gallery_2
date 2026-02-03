@@ -4,21 +4,23 @@ export type Work = {
   id: string;
   title: string;
   description?: string;
-  modelUrl?: string; // 例: "/models/sample.ply"（後で使用）
   tags?: string[];
+  splatSrc: string;
 };
 
 export const works: Work[] = [
   {
     id: "work-001",
     title: "Sample Work 001",
-    description: "PlayCanvas React quick start baseline",
+    description: "compressed ply test",
     tags: ["sample"],
+    splatSrc: "/splats/sample.compressed.ply",
   },
   {
     id: "work-002",
     title: "Sample Work 002",
-    description: "Second work entry (switch test)",
+    description: "ply test",
     tags: ["sample"],
+    splatSrc: "/splats/sample.ply",
   },
 ];

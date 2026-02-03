@@ -21,9 +21,13 @@ function App() {
   return (
     <>
       <div className="full-bleed">
-        <Application className="playcanvas-app">
+        <Application className="playcanvas-app" graphicsDeviceOptions={{ antialias: false }}>
           {/* 3D（PlayCanvas）だけ */}
-          <Viewer onClick={handleViewerClick} label={currentWork.title} />
+          <Viewer
+            onClick={handleViewerClick} 
+            label={currentWork.title}
+            splatSrc={currentWork.splatSrc}
+          />
         </Application>
       </div>
 
