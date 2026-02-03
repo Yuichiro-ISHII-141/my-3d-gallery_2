@@ -13,7 +13,12 @@ export const works: Work[] = [
     id: "work-001",
     title: "Sample Work 001",
     description: "PlayCanvas React quick start baseline",
-    // modelUrl: "/models/sample.ply",
+    tags: ["sample"],
+  },
+  {
+    id: "work-002",
+    title: "Sample Work 002",
+    description: "Second work entry (switch test)",
     tags: ["sample"],
   },
 ];
