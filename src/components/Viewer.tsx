@@ -1,12 +1,14 @@
 // src/components/Viewer.tsx
 
 // @ts-expect-error - PlayCanvas ESM scripts don't have type declarations
-import { CameraControls } from "playcanvas/scripts/esm/camera-controls.mjs";
+import { CameraControls } from "../scripts/camera-controls-custom.mjs";
 // @ts-expect-error - PlayCanvas ESM scripts don't have type declarations
 import { Grid } from "playcanvas/scripts/esm/grid.mjs";
 
 import { useEffect, useRef, useState } from "react";
 import type { Entity as PcEntity } from "playcanvas";
+import { Vec3 } from "playcanvas";
+import { useApp } from "@playcanvas/react/hooks";
 import { Entity } from "@playcanvas/react";
 import { useEnvAtlas, useSplat } from "@playcanvas/react/hooks";
 import { Camera, Environment, GSplat, Script } from "@playcanvas/react/components";
@@ -14,9 +16,15 @@ import { Camera, Environment, GSplat, Script } from "@playcanvas/react/component
 export function Viewer({ onClick, label, splatSrc }: ViewerProps) {
   const [hovering, setHovering] = useState(false);
 
+  const app = useApp();
+
   // Ref to the PlayCanvas camera Entity.
   // We use this to call Entity methods like lookAt() from React.
   const cameraRef = useRef<PcEntity | null>(null);
+
+  // Ref to the PlayCanvas model root Entity.
+  // We move this entity when the user right-drags (screen-plane pan).
+  const modelRef = useRef<PcEntity | null>(null);
 
   // Load the environment map
   const { asset: envMap } = useEnvAtlas("/environment-map.png");
@@ -43,6 +51,81 @@ export function Viewer({ onClick, label, splatSrc }: ViewerProps) {
     if (!cameraRef.current) return;
     cameraRef.current.lookAt(0, 0, 0);
   }, []);
+
+    // Prevent the browser context menu from stealing right-drag input.
+  useEffect(() => {
+    const onContextMenu = (e: MouseEvent) => e.preventDefault();
+    window.addEventListener("contextmenu", onContextMenu);
+    return () => window.removeEventListener("contextmenu", onContextMenu);
+  }, []);
+
+  // Enable right-drag to pan the MODEL on the screen plane (camera right/up),
+  // while keeping left-drag orbit rotation handled by CameraControls.
+  useEffect(() => {
+    if (!app) return;
+
+    const canvas = app.graphicsDevice.canvas;
+
+    let dragging = false;
+    let lastX = 0;
+    let lastY = 0;
+
+    const tmp = new Vec3();
+    const right = new Vec3();
+    const up = new Vec3();
+
+    // Prevent default context menu on right-click drag
+    const onContextMenu = (e: MouseEvent) => e.preventDefault();
+
+    const onPointerDown = (e: PointerEvent) => {
+      // Right button only
+      if (e.button !== 2) return;
+      dragging = true;
+      lastX = e.clientX;
+      lastY = e.clientY;
+
+      // capture pointer so we keep receiving move events even if cursor leaves canvas
+      canvas.setPointerCapture?.(e.pointerId);
+    };
+
+    const onPointerUp = (e: PointerEvent) => {
+      if (e.button !== 2) return;
+      dragging = false;
+      canvas.releasePointerCapture?.(e.pointerId);
+    };
+
+    const onPointerMove = (e: PointerEvent) => {
+      if (!dragging) return;
+      if (!cameraRef.current || !modelRef.current) return;
+
+      const dx = e.clientX - lastX;
+      const dy = e.clientY - lastY;
+      lastX = e.clientX;
+      lastY = e.clientY;
+
+      // Sensitivity: adjust this value to taste
+      const s = 0.002;
+
+      // Move model along camera's screen plane axes
+      right.copy(cameraRef.current.right).mulScalar(dx * s);
+      up.copy(cameraRef.current.up).mulScalar(-dy * s);
+
+      tmp.copy(modelRef.current.getPosition()).add(right).add(up);
+      modelRef.current.setPosition(tmp);
+    };
+
+    canvas.addEventListener("contextmenu", onContextMenu);
+    canvas.addEventListener("pointerdown", onPointerDown);
+    canvas.addEventListener("pointerup", onPointerUp);
+    canvas.addEventListener("pointermove", onPointerMove);
+
+    return () => {
+      canvas.removeEventListener("contextmenu", onContextMenu);
+      canvas.removeEventListener("pointerdown", onPointerDown);
+      canvas.removeEventListener("pointerup", onPointerUp);
+      canvas.removeEventListener("pointermove", onPointerMove);
+    };
+  }, [app]);
 
   // Don't render until the environment map is loaded
   // Wait until the environment map is loaded before rendering.
@@ -71,7 +154,7 @@ export function Viewer({ onClick, label, splatSrc }: ViewerProps) {
           Your model's axes are: +X = left, +Y = up, +Z = forward (into screen).
           Wrap GSplat with an Entity and rotate it so it appears "front-facing" in our viewer coordinate system.
       */}
-      <Entity rotation={[180, 0, 0]}>
+      <Entity rotation={[180, 0, 0]} position={[0, 0, 0]}>
         {splatAsset ? <GSplat asset={splatAsset} /> : null}
       </Entity>
 
