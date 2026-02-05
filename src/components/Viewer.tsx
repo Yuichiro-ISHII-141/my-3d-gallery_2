@@ -5,13 +5,18 @@ import { CameraControls } from "playcanvas/scripts/esm/camera-controls.mjs";
 // @ts-expect-error - PlayCanvas ESM scripts don't have type declarations
 import { Grid } from "playcanvas/scripts/esm/grid.mjs";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import type { Entity as PcEntity } from "playcanvas";
 import { Entity } from "@playcanvas/react";
 import { useEnvAtlas, useSplat } from "@playcanvas/react/hooks";
 import { Camera, Environment, GSplat, Script } from "@playcanvas/react/components";
 
 export function Viewer({ onClick, label, splatSrc }: ViewerProps) {
   const [hovering, setHovering] = useState(false);
+
+  // Ref to the PlayCanvas camera Entity.
+  // We use this to call Entity methods like lookAt() from React.
+  const cameraRef = useRef<PcEntity | null>(null);
 
   // Load the environment map
   const { asset: envMap } = useEnvAtlas("/environment-map.png");
@@ -32,7 +37,16 @@ export function Viewer({ onClick, label, splatSrc }: ViewerProps) {
     }
   }, [label]);
 
+  // Set the initial camera orientation once after mount:
+  // make the camera look at the world origin (0,0,0).
+  useEffect(() => {
+    if (!cameraRef.current) return;
+    cameraRef.current.lookAt(0, 0, 0);
+  }, []);
+
   // Don't render until the environment map is loaded
+  // Wait until the environment map is loaded before rendering.
+  // Returning null avoids rendering a partially-initialized scene.
   if (!envMap) return null;
 
   return (
@@ -46,14 +60,20 @@ export function Viewer({ onClick, label, splatSrc }: ViewerProps) {
       */}
 
       {/* Camera (tweak later if needed) */}
-      <Entity name="camera" position={[0, 0, 6]}>
+      <Entity ref={cameraRef} name="camera" position={[0, 0.5, 2.5]}>
         <Camera clearColor="#000000" />
         <Script script={CameraControls} />
       </Entity>
 
       {/* Pointer events container */}
       {/* GSplatは独立して描画（hover再レンダの巻き込みを避ける） */}
-      {splatAsset ? <GSplat asset={splatAsset} /> : null}
+      {/* Model transform wrapper:
+          Your model's axes are: +X = left, +Y = up, +Z = forward (into screen).
+          Wrap GSplat with an Entity and rotate it so it appears "front-facing" in our viewer coordinate system.
+      */}
+      <Entity rotation={[180, 0, 0]}>
+        {splatAsset ? <GSplat asset={splatAsset} /> : null}
+      </Entity>
 
       {/* イベントは別Entityで拾う（中身無し） */}
       <Entity
