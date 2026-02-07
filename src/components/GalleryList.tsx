@@ -14,7 +14,7 @@ export function GalleryList({
 }: GalleryListProps) {
   return (
     <aside className="gallery-list">
-      <h2>Works</h2>
+      <h2>3D Models</h2>
       <ul>
         {works.map((work, index) => (
           <li key={work.id}>

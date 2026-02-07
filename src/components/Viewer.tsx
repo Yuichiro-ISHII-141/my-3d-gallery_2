@@ -12,8 +12,9 @@ import { useApp } from "@playcanvas/react/hooks";
 import { Entity } from "@playcanvas/react";
 import { useEnvAtlas, useSplat } from "@playcanvas/react/hooks";
 import { Camera, Environment, GSplat, Script } from "@playcanvas/react/components";
+import { memo } from "react";
 
-export function Viewer({ onClick, label, splatSrc }: ViewerProps) {
+export function Viewer({ onClick, label, splatSrc, bgColor }: ViewerProps) {
   const [hovering, setHovering] = useState(false);
 
   const app = useApp();
@@ -31,6 +32,10 @@ export function Viewer({ onClick, label, splatSrc }: ViewerProps) {
 
   // Load Gaussian Splat asset (.ply / .compressed.ply)
   const { asset: splatAsset } = useSplat(splatSrc);
+
+  const SplatNode = memo(function SplatNode({ asset }: { asset: any }) {
+    return <GSplat asset={asset} />;
+  });
 
   // Change the mouse cursor based on the hover state
   useEffect(() => {
@@ -51,6 +56,16 @@ export function Viewer({ onClick, label, splatSrc }: ViewerProps) {
     if (!cameraRef.current) return;
     cameraRef.current.lookAt(0, 0, 0);
   }, []);
+
+  // Update camera clear color when bgColor changes
+  useEffect(() => {
+    if (!cameraRef.current) return;
+
+    const camera = cameraRef.current.camera;
+    if (!camera) return;
+
+    camera.clearColor.fromString(bgColor);
+  }, [bgColor, app]);
 
     // Prevent the browser context menu from stealing right-drag input.
   useEffect(() => {
@@ -144,7 +159,7 @@ export function Viewer({ onClick, label, splatSrc }: ViewerProps) {
 
       {/* Camera (tweak later if needed) */}
       <Entity ref={cameraRef} name="camera" position={[0, 0.5, 2.5]}>
-        <Camera clearColor="#121214" />
+        <Camera />
         <Script script={CameraControls} />
       </Entity>
 
@@ -154,8 +169,9 @@ export function Viewer({ onClick, label, splatSrc }: ViewerProps) {
           Your model's axes are: +X = left, +Y = up, +Z = forward (into screen).
           Wrap GSplat with an Entity and rotate it so it appears "front-facing" in our viewer coordinate system.
       */}
-      <Entity rotation={[180, 0, 0]} position={[0, 0, 0]}>
-        {splatAsset ? <GSplat asset={splatAsset} /> : null}
+      <Entity ref={modelRef} rotation={[180, 0, 0]} position={[0, 0, 0]}>
+        {/*{splatAsset ? <GSplat asset={splatAsset} /> : null}*/}
+        {splatAsset ? <SplatNode asset={splatAsset} /> : null}
       </Entity>
 
       {/* イベントは別Entityで拾う（中身無し） */}
@@ -173,4 +189,5 @@ type ViewerProps = {
   onClick: () => void;
   label?: string;
   splatSrc: string;
+  bgColor: string;
 };

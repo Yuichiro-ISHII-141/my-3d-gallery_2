@@ -15,6 +15,8 @@ export function Gallery() {
   // 現在表示中の作品インデックス
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  const [bgColor, setBgColor] = useState("#000000");
+
   // 現在の作品
   const currentWork = works[currentIndex];
 
@@ -37,6 +39,7 @@ export function Gallery() {
             onClick={handleViewerClick}
             label={currentWork.title}
             splatSrc={currentWork.splatSrc}
+            bgColor={bgColor}
           />
         </Application>
       </div>
@@ -47,6 +50,19 @@ export function Gallery() {
 
         {/* サイドバー */}
         <div className="sidebar pointer-events-auto">
+            {/* 上：固定ツール */}
+            <div className="sidebar-top">
+                <div className="sidebar-section-title">Background</div>
+
+                <div className="bg-preset-row">
+                <button className="bg-btn" onClick={() => setBgColor("#000000")}>Dark</button>
+                <button className="bg-btn" onClick={() => setBgColor("#2a2a2a")}>Gray</button>
+                <button className="bg-btn" onClick={() => setBgColor("#ffffff")}>White</button>
+                <button className="bg-btn" onClick={() => setBgColor("#f5f1e8")}>Ivory</button>
+                </div>
+            </div>
+
+        {/* 下：スクロールするリスト */}
           <GalleryList
             works={works}
             currentIndex={currentIndex}
@@ -58,17 +74,17 @@ export function Gallery() {
         {/* ヘッダー */}
         <div className="grow">
           <header>
-            <h1>My 3D Gallery</h1>
+            <h1>{currentWork.title}</h1>
           </header>
         </div>
 
 
-        {/* ステータス表示 */}
+        {/* ステータス表示
         <div>
           <span className="pill" style={{ marginLeft: 8 }}>
             Current: {currentWork.title}
           </span>
-        </div>
+        </div>*/}
 
 
       </div>
