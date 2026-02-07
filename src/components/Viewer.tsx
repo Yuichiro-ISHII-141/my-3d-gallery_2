@@ -144,7 +144,7 @@ export function Viewer({ onClick, label, splatSrc }: ViewerProps) {
 
       {/* Camera (tweak later if needed) */}
       <Entity ref={cameraRef} name="camera" position={[0, 0.5, 2.5]}>
-        <Camera clearColor="#000000" />
+        <Camera clearColor="#121214" />
         <Script script={CameraControls} />
       </Entity>
 
