@@ -15,7 +15,7 @@ export function Gallery() {
   // 現在表示中の作品インデックス
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const [bgColor, setBgColor] = useState("#000000");
+  const [bgColor, setBgColor] = useState("#777777");
 
   // 現在の作品
   const currentWork = works[currentIndex];
@@ -52,12 +52,12 @@ export function Gallery() {
         <div className="sidebar pointer-events-auto">
             {/* 上：固定ツール */}
             <div className="sidebar-top">
-                <div className="sidebar-section-title">Background</div>
+                <div className="sidebar-section-title">Background Color</div>
 
                 <div className="bg-preset-row">
-                <button className="bg-btn" onClick={() => setBgColor("#000000")}>Dark</button>
-                <button className="bg-btn" onClick={() => setBgColor("#2a2a2a")}>Gray</button>
-                <button className="bg-btn" onClick={() => setBgColor("#ffffff")}>White</button>
+                <button className="bg-btn" onClick={() => setBgColor("#252525")}>Dark</button>
+                <button className="bg-btn" onClick={() => setBgColor("#777777")}>Light Gray</button>
+                <button className="bg-btn" onClick={() => setBgColor("#E4E4E4")}>Light</button>
                 <button className="bg-btn" onClick={() => setBgColor("#f5f1e8")}>Ivory</button>
                 </div>
             </div>
@@ -74,8 +74,8 @@ export function Gallery() {
         {/* ヘッダー */}
         <div className="grow">
           <header>
-            <h1>{currentWork.title}</h1>
-          </header>
+            <h1 className="viewer-title">{currentWork.title}</h1>
+        </header>
         </div>
 
 
