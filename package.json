@@ -16,7 +16,8 @@
     "@playcanvas/react": "^0.11.3",
     "playcanvas": "^2.15.1",
     "react": "^19.2.3",
-    "react-dom": "^19.2.3"
+    "react-dom": "^19.2.3",
+    "react-router-dom": "^7.13.0"
   },
   "devDependencies": {
     "@types/react": "^19.2.9",
