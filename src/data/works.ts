@@ -11,16 +11,9 @@ export type Work = {
 export const works: Work[] = [
   {
     id: "work-001",
-    title: "Sample Work 001",
-    description: "compressed ply test",
+    title: "001: 馬の人形",
+    description: "五月人形として飾っていた馬の人形です。",
     tags: ["sample"],
-    splatSrc: "/splats/sample.compressed.ply",
-  },
-  {
-    id: "work-002",
-    title: "Sample Work 002",
-    description: "ply test",
-    tags: ["sample"],
-    splatSrc: "/splats/sample.ply",
+    splatSrc: "/splats/work_001.compressed.ply",
   },
 ];
