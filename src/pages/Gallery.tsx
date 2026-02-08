@@ -7,6 +7,7 @@ import "../App.css";
 import { Viewer } from "../components/Viewer";
 import { GalleryList } from "../components/GalleryList";
 import { works } from "../data/works";
+import { useNavigate } from "react-router-dom";
 
 
 // Gallery ページ本体
@@ -20,6 +21,8 @@ export function Gallery() {
   // 現在の作品
   const currentWork = works[currentIndex];
 
+  const navigate = useNavigate();
+
 
   // Viewer クリック時の処理
   const handleViewerClick = () => {
@@ -29,72 +32,96 @@ export function Gallery() {
 
   return (
     <>
-      {/* 3D 表示領域 */}
-      <div className="full-bleed">
+        {/* 3D 表示領域 */}
+        <div className="full-bleed">
         <Application
-          className="playcanvas-app"
-          graphicsDeviceOptions={{ antialias: false }}
+            className="playcanvas-app"
+            graphicsDeviceOptions={{ antialias: false }}
         >
-          <Viewer
+            <Viewer
             onClick={handleViewerClick}
             label={currentWork.title}
             splatSrc={currentWork.splatSrc}
             bgColor={bgColor}
-          />
+            />
         </Application>
-      </div>
+        </div>
 
-
-      {/* UI レイヤー */}
-      <div className="absolute overlay">
+        {/* UI レイヤー */}
+        <div className="absolute overlay">
 
         {/* サイドバー */}
         <div className="sidebar pointer-events-auto">
-            {/* 上：固定ツール */}
-            <div className="sidebar-top">
-                <div className="sidebar-section-title">Background Color</div>
 
-                <div className="bg-preset-row">
-                <button className="bg-btn" onClick={() => setBgColor("#252525")}>Dark</button>
-                <button className="bg-btn" onClick={() => setBgColor("#777777")}>Light Gray</button>
-                <button className="bg-btn" onClick={() => setBgColor("#E4E4E4")}>Light</button>
-                <button className="bg-btn" onClick={() => setBgColor("#f5f1e8")}>Ivory</button>
-                </div>
+            {/* 固定ヘッダー */}
+            <div className="sidebar-header">
+
+            {/* Home button */}
+            <div className="home-button-area">
+                <button
+                className="home-btn"
+                onClick={() => navigate("/")}
+                >
+                ← Home
+                </button>
             </div>
 
-        {/* 下：スクロールするリスト */}
-          <GalleryList
-            works={works}
-            currentIndex={currentIndex}
-            onSelect={setCurrentIndex}
-          />
+            {/* Background */}
+            <div className="sidebar-top">
+                <div className="sidebar-section-title">
+                Background Color
+                </div>
+
+                <div className="bg-preset-row">
+                <button className="bg-btn" onClick={() => setBgColor("#252525")}>
+                    Dark
+                </button>
+
+                <button className="bg-btn" onClick={() => setBgColor("#777777")}>
+                    Light Gray
+                </button>
+
+                <button className="bg-btn" onClick={() => setBgColor("#E4E4E4")}>
+                    Light
+                </button>
+
+                <button className="bg-btn" onClick={() => setBgColor("#f5f1e8")}>
+                    Ivory
+                </button>
+                </div>
+            </div>
+            </div>
+
+            {/* スクロール領域 */}
+            <div className="sidebar-body">
+            <GalleryList
+                works={works}
+                currentIndex={currentIndex}
+                onSelect={setCurrentIndex}
+            />
+            </div>
+
         </div>
 
 
-        {/* ヘッダー */}
+        {/* ヘッダー（モデル名＋説明） */}
         <div className="grow">
             <header className="viewer-header">
-                <h1 className="viewer-title">{currentWork.title}</h1>
 
-                {currentWork.description && (
-                    <p className="viewer-description">
-                    {currentWork.description}
-                    </p>
-                )}
+            <h1 className="viewer-title">
+                {currentWork.title}
+            </h1>
+
+            {currentWork.description && (
+                <p className="viewer-description">
+                {currentWork.description}
+                </p>
+            )}
+
             </header>
         </div>
 
-
-
-        {/* ステータス表示
-        <div>
-          <span className="pill" style={{ marginLeft: 8 }}>
-            Current: {currentWork.title}
-          </span>
-        </div>*/}
-
-
-      </div>
+        </div>
     </>
-  );
+    );
 }

@@ -203,6 +203,17 @@ header {
   color: #000;
 }
 
+.sidebar-header {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+.sidebar-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+}
+
 
 /* ===== Viewer title plate (readability) ===== */
 
@@ -249,4 +260,31 @@ header {
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   margin: 0;
+}
+
+
+/* Home button */
+
+.home-button-area {
+  top: 12px;
+  right: 16px;
+  z-index: 1000;
+  pointer-events: auto;
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+.home-btn {
+  background: rgba(255, 255, 255, 0.9);
+  color: #000;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-align: left;
+}
+
+.home-btn:hover {
+  background: rgba(255, 255, 255, 1);
 }
