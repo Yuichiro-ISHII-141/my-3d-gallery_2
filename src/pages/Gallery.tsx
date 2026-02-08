@@ -73,10 +73,17 @@ export function Gallery() {
 
         {/* ヘッダー */}
         <div className="grow">
-          <header>
-            <h1 className="viewer-title">{currentWork.title}</h1>
-        </header>
+            <header className="viewer-header">
+                <h1 className="viewer-title">{currentWork.title}</h1>
+
+                {currentWork.description && (
+                    <p className="viewer-description">
+                    {currentWork.description}
+                    </p>
+                )}
+            </header>
         </div>
+
 
 
         {/* ステータス表示
