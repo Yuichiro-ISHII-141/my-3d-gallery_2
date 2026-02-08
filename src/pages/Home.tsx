@@ -7,7 +7,7 @@ export function Home() {
 
         <div className="profile-image">
         <img
-            src="/icons/image14.png"
+            src={`${import.meta.env.BASE_URL}icons/image14.png`}
             alt="Profile Icon"
             className="profile-icon"
         />
@@ -42,7 +42,7 @@ export function Home() {
             >
             {/*X (Twitter)*/}
             <img
-            src="/icons/x-logo-black.png"
+            src={`${import.meta.env.BASE_URL}icons/x-logo-black.png`}
             alt="X (Twitter)"
             className="social-icon"
             />
