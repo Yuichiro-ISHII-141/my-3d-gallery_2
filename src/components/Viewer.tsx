@@ -142,10 +142,9 @@ export function Viewer({ onClick, label, splatSrc, bgColor }: ViewerProps) {
     };
   }, [app]);
 
-  // Don't render until the environment map is loaded
   // Wait until the environment map is loaded before rendering.
   // Returning null avoids rendering a partially-initialized scene.
-  if (!envMap) return null;
+  {envMap ? <Environment envAtlas={envMap} showSkybox={false} /> : null}
 
   return (
     <>

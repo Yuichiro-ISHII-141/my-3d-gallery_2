@@ -1,5 +1,7 @@
 // src/data/works.ts
 
+const BASE = import.meta.env.BASE_URL; // devなら "/" / Pagesなら "/my-3d-gallery_2/"
+
 export type Work = {
   id: string;
   title: string;
@@ -14,6 +16,6 @@ export const works: Work[] = [
     title: "001: 馬の人形",
     description: "五月人形として飾っていた馬の人形です。",
     tags: ["sample"],
-    splatSrc: "/splats/work_001.compressed.ply",
+    splatSrc: `${BASE}splats/work_001.compressed.ply`,
   },
 ];
