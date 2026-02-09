@@ -28,7 +28,12 @@ export function Viewer({ onClick, label, splatSrc, bgColor }: ViewerProps) {
   const modelRef = useRef<PcEntity | null>(null);
 
   // Load the environment map
-  const { asset: envMap } = useEnvAtlas("/environment-map.png");
+  //const { asset: envMap } = useEnvAtlas("/environment-map.png");
+  const base = import.meta.env.BASE_URL;
+
+  const { asset: envMap } = useEnvAtlas(
+    `${base}environment-map.png`
+  );
 
   // Load Gaussian Splat asset (.ply / .compressed.ply)
   const { asset: splatAsset } = useSplat(splatSrc);
