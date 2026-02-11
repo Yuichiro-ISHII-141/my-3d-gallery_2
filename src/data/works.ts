@@ -14,7 +14,7 @@ export const works: Work[] = [
   {
     id: "work-001",
     title: "001: 馬の人形",
-    description: "馬の人形です。子供の頃、実家で五月人形のお供として飾っていたものです。",
+    description: "午年ということもあり、馬の人形です。子供の頃、実家で五月人形のお供として飾っていたものです。",
     tags: ["sample"],
     splatSrc: `${BASE}splats/work_001.compressed.ply`,
   },
