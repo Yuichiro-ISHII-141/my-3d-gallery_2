@@ -26,4 +26,12 @@ export const works: Work[] = [
     tags: ["sample"],
     splatSrc: `${BASE}splats/work_002.compressed.ply`,
   },
+
+  {
+    id: "work-003",
+    title: "003: 蔓の籠",
+    description: "太めの蔓で編まれた籠です。",
+    tags: ["sample"],
+    splatSrc: `${BASE}splats/work_003.compressed.ply`,
+  },
 ];
